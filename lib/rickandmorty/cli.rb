@@ -32,7 +32,7 @@ class CLI
 
     def character_menu
         puts "1. To search a character by name"
-        puts "2. To browse throgh the list"
+        puts "2. To browse through the list"
         input = gets.strip.to_i
         until input.between?(1,2)
             puts "Not a valid choice, please try again"
@@ -40,12 +40,8 @@ class CLI
         end
         if input == 1
             search_character_by_name
-        
         elsif input == 2
             display_characters
-            Character.all.each do |character|
-                puts "#{character.id}. #{character.name}"
-            end
         end
     end
 
@@ -71,7 +67,6 @@ class CLI
                 puts "Not a valid choice, please try again"
                 input = gets.strip.to_i - 1
             end
-            puts "Good choice!"
             display_character_detail(character_array[input])
         end
     end
@@ -105,21 +100,37 @@ class CLI
         puts "Origin: #{character_instance.origin}"
         puts "Gender: #{character_instance.gender}"
         puts "Type: #{character_instance.type}"
-        puts "Episode: #{character_instance.episode}"
+        puts "Episodes:"
+        character_instance.episode.each {|epi| puts "         #{epi.name}"}
+        sleep(4)
+        exit_menu
+    end
+
+    def exit_menu
         puts "1. To go back to main menu"
-        puts "2. To search by name again"
-        puts "3. To exit the program"
+        puts "2. To exit the program"
         input = gets.strip.to_i
-        until input.between?(1,3)
+        until input.between?(1,2)
             puts "Not a valid choice, please try again"
             input = gets.strip.to_i
         end
         if input == 1 
             menu
-        elsif input == 2
-            search_character_by_name
         else
             puts "Goodbye!"
         end
+    end
+
+    def display_characters
+        Character.all.each do |character|
+            puts "#{character.id}. #{character.name}"
+        end
+        puts "Choose a character you would like to see in detail"
+        input = gets.strip.to_i - 1
+        until input.between?(0,Character.all.length - 1)
+            puts "Not a valid choice, please try again"
+            input = gets.strip.to_i - 1
+        end
+        display_character_detail(Character.all[input])
     end
 end

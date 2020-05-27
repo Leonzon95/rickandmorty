@@ -18,9 +18,4 @@ class Character
         @@all
     end
 
-    def self.display_characters
-        @@all.each do |character|
-            puts "#{character.id}. #{character.name}"
-        end
-    end
 end

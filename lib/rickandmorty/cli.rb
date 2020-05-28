@@ -1,6 +1,6 @@
 class CLI
     def start
-        
+        Cartoon.new.loading
         API.fetch_episode
         API.fetch_location
         API.fetch_characters
@@ -27,7 +27,7 @@ class CLI
         elsif input == 3
             location_menu
         elsif input == 4
-            puts "Goodbye!"
+            Cartoon.new.goodbye
         end
     end
 
@@ -132,7 +132,7 @@ class CLI
         elsif input == 3
             menu
         else
-            puts "Goodbye!"
+            Cartoon.new.goodbye
         end
     end
 
@@ -161,7 +161,7 @@ class CLI
         if input == 1 
             menu
         else
-            puts "Goodbye!"
+            Cartoon.new.goodbye
         end
     end
 
@@ -260,7 +260,7 @@ class CLI
         elsif input == 3
             menu
         else
-            puts "Goodbye!"
+            Cartoon.new.goodbye
         end
     end
 

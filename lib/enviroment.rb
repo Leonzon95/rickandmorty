@@ -9,8 +9,4 @@ require_relative "./rickandmorty/character"
 require_relative "./rickandmorty/api"
 require_relative "./rickandmorty/location"
 require_relative "./rickandmorty/episode"
-
-module Rickandmorty
-  class Error < StandardError; end
-  # Your code goes here...
-end
+require_relative "./rickandmorty/cartoon"

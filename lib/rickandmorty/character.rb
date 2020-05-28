@@ -1,6 +1,6 @@
 class Character
-    attr_accessor :id, :name, :status, :species, :gender, :type, :origin
-    attr_reader :episode
+    attr_accessor :id, :name, :status, :species, :gender, :type
+    attr_reader :episode, :origin
     @@all = []
 
     def initialize(char_hash)
@@ -11,7 +11,7 @@ class Character
         @status = char_hash["status"]
         @species = char_hash["species"]
         @gender = char_hash["gender"]
-        @origin = char_hash["origin"]["name"]
+        self.origin=(char_hash["origin"]["url"])
         @type = char_hash["type"]
     end
 
@@ -27,5 +27,12 @@ class Character
             episode_obj
         end
         @episode = episode_array
+    end
+
+    def origin=(url)
+            array = url.split("/")
+            last_peice = array[-1].to_i
+            location_obj = Location.all.detect {|episode| episode.id == last_peice}
+            @origin = location_obj
     end
 end

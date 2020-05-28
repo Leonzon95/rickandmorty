@@ -1,5 +1,5 @@
 class Location
-    attr_accessor :name, :type, :dimension, :residents, :created, :id
+    attr_accessor :name, :type, :dimension, :created, :id
     @@all = []
 
     def initialize(location_hash)
@@ -8,11 +8,15 @@ class Location
         @name = location_hash["name"]
         @type = location_hash["type"]
         @dimension = location_hash["dimension"]
-        @residents = location_hash["residents"]
         @created = location_hash["created"]
     end
 
     def self.all
         @@all
+    end
+
+    def residents
+        resident_array = Character.all.select{|resident| resident.origin == self}
+        resident_array
     end
 end

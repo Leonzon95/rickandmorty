@@ -22,7 +22,7 @@ class CLI
         if input == 1
             character_menu
         elsif input == 2
-            location_menu
+            episode_menu
         elsif input == 3
             location_menu
         elsif input == 4
@@ -114,7 +114,7 @@ class CLI
         puts "Gender: #{character_instance.gender}"
         puts "Type: #{character_instance.type}"
         puts "Episodes:"
-        character_instance.episode.each {|epi| puts "         #{epi.name}"}
+        character_instance.episode.each {|epi| puts "         ##{epi.id}. #{epi.name}"}
         sleep(3)
         exit_menu
     end
@@ -209,7 +209,46 @@ class CLI
         puts "Dimension: #{location_instance.dimension}"
         puts "Type: #{location_instance.type}"
         puts "Created: #{location_instance.created}"
-        puts "Residents: #{location_instance.residents}"
+        puts "Residents:"
+        location_instance.residents.each.with_index(1) do |resident, i|
+            puts "          #{i}. #{resident.name}"
+        end
+        sleep(3)
+        exit_menu
+    end
+
+    def episode_menu
+        puts "1. To browse through the list"
+        input = gets.strip.to_i
+        until input == 1
+            puts "Not a valid choice, please try again"
+            input = gets.strip.to_i
+        end
+        display_episodes
+    end
+
+    def display_episodes
+        Episode.all.each do |episode|
+            puts "#{episode.id}. #{episode.name}"
+        end
+        puts "Choose the episode you would like to see in detail"
+        input = gets.strip.to_i
+        until input.between?(1, Episode.all.length)
+            puts "Not a valid choice, please try again"
+            input = gets.strip.to_i
+        end
+        display_episode_detail(Episode.all[input - 1])
+    end 
+
+    def display_episode_detail(episode_instance)
+        puts "Name: #{episode_instance.name}"
+        puts "Dimension: #{episode_instance.episode}"
+        puts "Type: #{episode_instance.air_date}"
+        puts "Created: #{episode_instance.created}"
+        puts "Residents:"
+        episode_instance.characters.each.with_index(1) do |character, i|
+            puts "          #{i}. #{character.name}"
+        end
         sleep(3)
         exit_menu
     end

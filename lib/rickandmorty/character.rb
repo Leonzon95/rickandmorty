@@ -35,4 +35,13 @@ class Character
             location_obj = Location.all.detect {|episode| episode.id == last_peice}
             @origin = location_obj
     end
+
+    def origin_name
+        if !self.origin
+            "unknown"
+        else
+            self.origin.name
+        end
+    end
+
 end

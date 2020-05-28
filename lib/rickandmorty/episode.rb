@@ -25,7 +25,5 @@ class Episode
             end
         end
         character_array
-      
     end
-
 end

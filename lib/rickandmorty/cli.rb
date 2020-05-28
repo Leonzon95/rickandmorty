@@ -1,5 +1,6 @@
 class CLI
     def start
+        
         API.fetch_episode
         API.fetch_location
         API.fetch_characters
@@ -45,17 +46,46 @@ class CLI
         end
     end
 
-    def display_characters
-        Character.all.each do |character|
+    def display_characters(index=0)
+        range_index = index + 29
+        if range_index > Character.all.length - 1
+            range_index = Character.all.length - 1
+        end
+        Character.all[index..(range_index)].each do |character|
             puts "#{character.id}. #{character.name}"
         end
         puts "Choose a character you would like to see in detail"
-        input = gets.strip.to_i - 1
-        until input.between?(0,Character.all.length - 1)
+        puts "Or press enter to see more characters"
+        input = gets.strip
+        new_input = input.to_i - 1
+        until new_input.between?(0,(range_index)) || input == ""
             puts "Not a valid choice, please try again"
-            input = gets.strip.to_i - 1
+            input = gets.strip
+            new_input = input.to_i - 1
         end
-        display_character_detail(Character.all[input])
+        if input == ""
+            new_index = index + 30
+            if range_index == Character.all.length - 1
+                no_more_characters_to_display
+            elsif new_index > Character.all.length - 1
+                display_characters(Character.all.length - 1)
+            else
+                display_characters(new_index)
+            end
+        else
+            display_character_detail(Character.all[new_input])
+        end
+    end
+
+    def no_more_characters_to_display
+        puts "There are no more characters to display"
+        puts "Please choose the character you would like to see in detail"
+        input = gets.strip.to_i
+        until input.between?(1, Character.all.length)
+            puts "Not a valid choice, please try again"
+            input = gets.strip.to_i
+        end
+        display_character_detail(Character.all[input - 1])
     end
 
     def search_character_by_name
@@ -107,15 +137,16 @@ class CLI
     end
 
     def display_character_detail(character_instance)
+        sleep(1)
         puts "Name: #{character_instance.name}"
         puts "Species: #{character_instance.species}"
         puts "Status: #{character_instance.status}"
-        puts "Origin: #{character_instance.origin.name}"
+        puts "Origin: #{character_instance.origin_name}"
         puts "Gender: #{character_instance.gender}"
         puts "Type: #{character_instance.type}"
         puts "Episodes:"
-        character_instance.episode.each {|epi| puts "         ##{epi.id}. #{epi.name}"}
-        sleep(3)
+        character_instance.episode.each {|epi| puts "         #{epi.episode}. #{epi.name}"}
+        sleep(1)
         exit_menu
     end
 
@@ -149,18 +180,47 @@ class CLI
         end
     end
 
-    def display_locations
-        Location.all.each do |location|
+    def display_locations(index=0)
+        range_index = index + 29
+        if range_index > Location.all.length - 1
+            range_index = Location.all.length - 1
+        end
+        Location.all[index..(range_index)].each do |location|
             puts "#{location.id}. #{location.name}"
         end
-        puts "Choose the location you would like to see in detail"
+        puts "Choose a location you would like to see in detail"
+        puts "Or press enter to see more locations"
+        input = gets.strip
+        new_input = input.to_i - 1
+        until new_input.between?(0,(range_index)) || input == ""
+            puts "Not a valid choice, please try again"
+            input = gets.strip
+            new_input = input.to_i - 1
+        end
+        if input == ""
+            new_index = index + 30
+            if range_index == Location.all.length - 1
+                no_more_locations_to_display
+            elsif new_index > Location.all.length - 1
+                display_characters(Location.all.length - 1)
+            else
+                display_locations(new_index)
+            end
+        else
+            display_location_detail(Location.all[new_input])
+        end
+    end 
+
+    def no_more_locations_to_display
+        puts "There are no more locations to display"
+        puts "Please choose the location you would like to see in detail"
         input = gets.strip.to_i
         until input.between?(1, Location.all.length)
             puts "Not a valid choice, please try again"
             input = gets.strip.to_i
         end
         display_location_detail(Location.all[input - 1])
-    end 
+    end
 
     def search_location_by_name
         puts "Please type the name of location you would like to look for"
@@ -182,7 +242,7 @@ class CLI
     end
 
     def no_location_match
-        sleep(2)
+        sleep(1)
         puts "Sorry nothing matches your search"
         puts "1. Try again"
         puts "2. Go back to location menu"
@@ -205,15 +265,16 @@ class CLI
     end
 
     def display_location_detail(location_instance)
+        sleep(1)
         puts "Name: #{location_instance.name}"
         puts "Dimension: #{location_instance.dimension}"
         puts "Type: #{location_instance.type}"
         puts "Created: #{location_instance.created}"
         puts "Residents:"
         location_instance.residents.each.with_index(1) do |resident, i|
-            puts "          #{i}. #{resident.name}"
+            puts "          #{i}- #{resident.name}"
         end
-        sleep(3)
+        sleep(1)
         exit_menu
     end
 
@@ -241,6 +302,7 @@ class CLI
     end 
 
     def display_episode_detail(episode_instance)
+        sleep(1)
         puts "Name: #{episode_instance.name}"
         puts "Dimension: #{episode_instance.episode}"
         puts "Type: #{episode_instance.air_date}"
@@ -249,7 +311,7 @@ class CLI
         episode_instance.characters.each.with_index(1) do |character, i|
             puts "          #{i}. #{character.name}"
         end
-        sleep(3)
+        sleep(1)
         exit_menu
     end
 end

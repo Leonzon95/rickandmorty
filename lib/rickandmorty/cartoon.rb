@@ -25,6 +25,7 @@ class Cartoon
   end
 
   def goodbye
+    sleep(1)
       puts "  GOODBYE, SEE YOU NEXT TIME"
       puts "  _____________  ___________     "
       puts "       _____   |/  "

@@ -23,7 +23,7 @@ class CLI
         if input == 1
             character_menu
         elsif input == 2
-            episode_menu
+            display_episodes
         elsif input == 3
             location_menu
         elsif input == 4
@@ -304,10 +304,10 @@ class CLI
     def display_episode_detail(episode_instance)
         sleep(1)
         puts "Name: #{episode_instance.name}"
-        puts "Dimension: #{episode_instance.episode}"
-        puts "Type: #{episode_instance.air_date}"
+        puts "Epidsode: #{episode_instance.episode}"
+        puts "Air date: #{episode_instance.air_date}"
         puts "Created: #{episode_instance.created}"
-        puts "Residents:"
+        puts "Characters:"
         episode_instance.characters.each.with_index(1) do |character, i|
             puts "          #{i}. #{character.name}"
         end
